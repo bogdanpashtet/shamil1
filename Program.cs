@@ -1,71 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.VisualBasic;
 
-namespace lab2
+namespace lab1
 {
     class Program
     {
-        
-        static int amount_of_unique_symbols(string line, Dictionary<char, string> coder )
+
+        public static double amount_of_information(double color, double summ)
         {
-            int amount = 0;
-            //string ss = line;
-            bool flag = true;
+            double inf = Math.Log2(summ / color);
+
             
             
-            
-            for (int i = 0; i < line.Length; i++)
-            {
-                
-                int j = i+1;
-                
-                while ( j < line.Length && flag)
-                {
-                    if (line[i] == line[j]) flag = false;
-                    ++j;
-                }
+            if ((inf - Math.Truncate(inf))  != 0) ++inf;
 
-                if (flag)
-                {
-                    coder.Add(line[i],Convert.ToString(amount, 2)); 
-                    ++amount;
-                }
-
-                flag = true;
-
-            }
-
-            return amount;
+            return Math.Floor(inf);
         }
-        
+
+        public static double average_amount_of_information(double color1, double color2, double color3, double summ)
+        {
+            double inf = color1 / summ * Math.Log2(summ / color1) + color2 / summ * Math.Log2(summ / color2) + color3 / summ * Math.Log2(summ / color3);
+            if ((inf - Math.Truncate(inf)) != 0) ++inf;
+            return Math.Floor(inf);
+        }
+
         static void Main(string[] args)
         {
+            double red = 108.0;
+            double yellow = 4.0;
+            double green = 16.0;
+
             
-            Console.WriteLine("Введите строку: ");
-            string str = Console.ReadLine();
-            str = str.ToLower();
-            Dictionary<char, string> coder = new Dictionary<char,string>();
-
-
-            Console.Write("Количество уникальных символов: ");
-            int kol = amount_of_unique_symbols(str, coder);
-            Console.WriteLine(kol);
-
-            int dlina = Convert.ToString(kol, 2).Length;
+            Console.WriteLine("Enter red color: ");
+            red =  Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter yellow color: ");
+            yellow =  Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter green color: ");
+            green =  Convert.ToDouble(Console.ReadLine());
             
-            Console.WriteLine("Алфавит:");
-            foreach(var iter in coder)
-            {
-                Console.WriteLine($"\'{iter.Key}\' - {iter.Value.PadLeft(dlina,'0')}");
-            }
             
-            Console.Write("Перевод: ");
-
-            foreach(var iter in str)
-            {
-                Console.Write(coder[iter].PadLeft(dlina,'0'));
-            }
+            
+            double summ_of_sygnals = red + yellow + green;
+                       
+            
+            Console.WriteLine();
+            Console.Write("Count of information in red color: ");
+            Console.Write(amount_of_information(red, summ_of_sygnals));
+            
+            Console.WriteLine();
+            Console.Write("Count of information in yellow color: ");
+            Console.Write(amount_of_information(yellow, summ_of_sygnals));
+            
+            Console.WriteLine();
+            Console.Write("Count of information in green color: ");
+            Console.Write(amount_of_information(green, summ_of_sygnals));
+            
+            Console.WriteLine();
+            Console.Write("Average amount of information: ");
+            Console.Write(average_amount_of_information(red, yellow, green, summ_of_sygnals));
+            
         }
     }
 }
